@@ -77,8 +77,8 @@ while True:
 ```
 ## Server:
 ```
-# Developed by : AASHIF AHAMED S
-# Register Number : 212225040004
+# Developed by : LAKSHMI NARASIMAN K
+# Register Number : 212225230146
 import socket
 s=socket.socket()  
 s.connect(('localhost',8000))  
