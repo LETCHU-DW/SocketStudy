@@ -60,21 +60,25 @@ Socket programming finds applications in various domains, including web developm
 # Developed by : LAKSHMI NARASIMAN K
 # Register Number : 212225230146
 import socket
+from datetime import datetime
+
 s = socket.socket()
-host = input(str('Enter hostname or host IP : '))
-port = 9000
-s.connect((host, port))
-print('Connected to chat server')
-while 1:
-    incoming_message = s.recv(1024)
-    incoming_message = incoming_message.decode()
-    print('Server : ', incoming_message)
-    print()
-    message = input(str('>> '))
-    message = message.encode()
-    s.send(message)
-    print('Sent')
-    print()
+s.bind(('localhost', 8000))
+s.listen(5)
+
+print("Server is listening...")
+c, addr = s.accept()
+print("Client Address:", addr)
+
+now = datetime.now()
+c.send(now.strftime("%d/%m/%Y %H:%M:%S").encode())
+
+ack = c.recv(1024).decode()
+if ack:
+    print(ack)
+    c.close()
+
+s.close()
 ```
 ## Server:
 ```
@@ -83,38 +87,24 @@ while 1:
 import socket
 
 s = socket.socket()
-host = "127.0.0.1"
-print(' Server will start on host : ', host)
-port = 9000
-s.bind((host, port))
-print()
-print('Waiting for connection')
-print()
-s.listen(1)
-conn, addr = s.accept()
-print(addr, ' Has connected to the server')
-print()
-while 1:
-    message = input(str('>> '))
-    message = message.encode()
-    conn.send(message)
-    print('Sent')
-    print()
-    incoming_message = conn.recv(1024)
-    incoming_message = incoming_message.decode()
-    print(' Client : ', incoming_message)
-    print()
+s.connect(('localhost', 8000))
+
+print(s.getsockname())
+print(s.recv(1024).decode())
+
+s.send("Acknowledgement received from the server".encode())
+s.close()
 ```
 ## Output:
 Client:
 <br>
-<img width="1206" height="326" alt="image" src="https://github.com/user-attachments/assets/691d083b-35c6-475c-bed8-37b1c2c1a269" />
+<img width="490" height="311" alt="image" src="https://github.com/user-attachments/assets/441d24c6-0646-4b0f-915f-8f7f0012238e" />
+
 
 
 Server:
 <br>
-<img width="1200" height="180" alt="image" src="https://github.com/user-attachments/assets/d457f084-e2ad-4739-80a1-c35424727f40" />
-
+<img width="480" height="297" alt="image" src="https://github.com/user-attachments/assets/40572d5d-c6c4-4ddd-ba41-c795cad1247d" />
 
 ## Result:
 Thus the study of Socket Programming Completed Successfully
